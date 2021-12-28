@@ -26,6 +26,10 @@ export default function Todo() {
 
   return (
     <div className="w-full p-10">
+      <Link href="/">
+        <a className="mb-10">log out</a>
+      </Link>
+
       <form onSubmit={submit} className="flex items-baseline">
         <input onChange={inp} placeholder="Enter List" className="border-[1px] py-3 pl-4 pr-3 w-full rounded-md border-gray-300 focus:border-indigo-600 " type="text" />
         <button type="submit" className="ml-5 bg-indigo-600 py-3 px-4 rounded-lg text-white font-bold">
