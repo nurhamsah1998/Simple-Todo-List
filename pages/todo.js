@@ -3,13 +3,35 @@ import Register from './register';
 import Link from 'next/link';
 import { useState } from 'react';
 import { uid } from 'uid';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import List from './list';
 
 export default function Todo() {
   const [data, setData] = useState([]);
   const [value, setValue] = useState('');
+  const [todo, setTodo] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get('https://api.kontenbase.com/query/api/v1/256886a0-0b57-4a10-8387-54099d7f66ed/todos?$limit=100')
+      .then((res) => {
+        setTodo(res.data);
+      })
+      .catch((er) => {
+        alert('asd');
+      });
+  }, []);
 
   function submit(e) {
     e.preventDefault();
+    if (value === '') {
+      alert('masukkan katanya mblo!!');
+      return false;
+    } else {
+      alert('sdf');
+    }
     const newData = [...data];
     const msg = {
       id: uid(),
@@ -17,6 +39,17 @@ export default function Todo() {
     };
     newData.push(msg);
     setData(newData);
+
+    const body = {
+      name: value,
+    };
+
+    axios
+      .post('https://api.kontenbase.com/query/api/v1/256886a0-0b57-4a10-8387-54099d7f66ed/todos', body)
+      .then(function (r) {})
+      .catch(function (e) {
+        alert('ANDA GAGAL!!');
+      });
   }
 
   function inp(e) {
@@ -36,6 +69,7 @@ export default function Todo() {
           add
         </button>
       </form>
+      <List todos={todo} />
       {data.map((item) => {
         return (
           <div key={item.id}>
